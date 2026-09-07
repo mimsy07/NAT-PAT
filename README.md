@@ -8,3 +8,10 @@ and a <b>Static NAT</b> in a multi-router network environment using Cisco router
 using a multiple public IP address pool. PAT was used to allow multiple private IP to share a public IP address through port numberings.
 
 VLANs and Router-on-a-Stick are used on ISP side to separate the three company networks while sharing the same physical interface. For connectivity EIGRP was implement with autonomous system # 199. </p> 
+
+<h2>Project Walk through</h2>
+
+<p align="center">
+Network Diagram: <br/>
+<img src="https://github.com/mimsy07/ACL/blob/main/ACL.png" height="80%" width="80%"/>
+<br />
