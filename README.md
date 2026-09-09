@@ -122,3 +122,121 @@ network 10.10.10.0 255.255.255.0
 network 130.30.30.0 255.255.255.252
 no auto-summary
 ```
+
+<h3>ISP ROUTER</h3>
+
+<p>Initializing g0/1 interface, configuring sub-interfaces and implementing trunking encapsulation</p>
+
+```
+int g0/1
+no ip address
+no shut
+!
+int g0/1.110
+encapsulation dot1q 110
+ip address 20.30.10.2 255.255.255.0
+exit
+!
+int g0/1.210
+encapsulation dot1q 210
+ip address 25.35.42.2 255.255.255.224
+exit
+!
+int g0/1.310
+encapsulation dot1q 310
+ip address 130.30.30.2 255.255.255.252
+exit
+
+```
+
+EIGRP
+
+<p>Advertise directly connected network including sub-interface network</p>
+
+```
+router eigrp 199
+network 200.10.20.0 255.255.255.0
+network 20.30.10.0 255.255.255.0
+network 25.35.42.0 255.255.255.224
+network 130.30.30.0 255.255.255.252
+no auto-summary
+```
+
+<h3>ISP SW1</h3>
+
+<p>Assigning switchport mode, creating VLANs and assigning the ports </p>
+
+```
+vlan 110
+name CO-1
+exit
+!
+vlan 210
+name CO-2
+exit
+vlan 310
+name CO-3
+exit
+
+int 5/1
+switchport mode trunk
+exit
+!
+int range 6/1, 7/1, 8/1
+switchport mode access
+exit
+!
+int 6/1
+switchport access vlan 110
+exit
+!
+int 7/1
+switchport access vlan 210
+exit
+!
+int 8/1
+switchport access vlan 310
+exit
+!
+```
+
+<h3>Others</h3>
+
+WEB-1
+<p>Assigning IP address and implement a default static route (since they are stub router)</p>
+
+```
+int g0/0
+ip address 200.10.20.10 255.255.255.0
+no shut
+exit
+!
+ip route 0.0.0.0 0.0.0.0 g0/0
+
+```
+
+WEB-2
+<p>Assigning IP address and implement a default static route (WEB-2 are also a stub router)</p>
+
+```
+int g0/0
+ip address 200.10.20.20 255.255.255.0
+no shut
+exit
+!
+ip route 0.0.0.0 0.0.0.0 g0/0
+
+```
+
+SERVER-1
+<p>Assigning IP address and implement a default static route</p>
+
+```
+int g0/0
+ip address 200.10.20.30 255.255.255.0
+no shut
+exit
+!
+ip route 0.0.0.0 0.0.0.0 g0/0
+
+```
