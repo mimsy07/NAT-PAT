@@ -30,3 +30,95 @@ VLANs and Router-on-a-Stick are used on ISP side to separate the three company n
 Network Diagram: <br/>
 <img src="https://github.com/mimsy07/NAT-PAT/blob/main/Untitled.png" height="80%" width="80%"/>
 <br />
+
+<p align="center">
+Company's IP addresses and port assigned: <br/>
+<img src="https://github.com/mimsy07/NAT-PAT/blob/main/ip%20address.png" height="50%" width="50%"/>
+<br/>
+
+
+<p align="center">
+ISP: <br/>
+<img src="https://github.com/mimsy07/NAT-PAT/blob/main/ISP.png" height="50%" width="50%"/>
+<br />
+
+<h2>Configuration</h2>
+
+<h3>COMPANY-1</h3>
+
+Static NAT
+```
+ip nat inside source static 192.168.10.1 20.30.10.10 
+ip nat inside source static 192.168.10.2 20.30.10.20 
+ip nat inside source static 192.168.10.3 20.30.10.30 
+ip nat inside source static 192.168.10.100 20.30.10.40 
+!
+int g0/1
+ip nat inside
+exit
+!
+int g0/0
+ip nat outside
+exit
+
+```
+
+EIGRP
+```
+router eigrp 199
+network 192.168.10.0 255.255.255.0
+network 20.30.10.0 255.255.255.0
+no auto-summary
+```
+
+
+<h3>COMPANY-2</h3>
+
+Dynamic NAT
+```
+ip nat pool cmpny-2 25.35.42.3 25.35.42.7 netmask 255.255.255.224 
+access-list 20 permit 172.16.10.0 0.0.0.255 
+ip nat inside source list 20 pool cmpny-2 overload    
+!
+int g0/1
+ip nat inside
+exit
+!
+int
+int g0/0
+ip nat outside 
+```
+
+EIGRP
+```
+router eigrp 199
+network 172.16.10.0 255.255.255.0
+network 25.35.42.0 255.255.255.224
+no auto-summary
+```
+
+
+<h3>COMPANY-3</h3>
+
+Dynamic NAT
+```
+ip nat pool cmpny-3 130.30.30.1 130.30.30.1 netmask 255.255.255.252
+access-list 30 permit 10.10.10.0 0.0.0.255 
+ip nat inside source list 30 pool cmpny-3 overload    
+!
+int g0/1
+ip nat inside
+exit
+!
+int
+int g0/0
+ip nat outside 
+```
+
+EIGRP
+```
+router eigrp 199
+network 10.10.10.0 255.255.255.0
+network 130.30.30.0 255.255.255.252
+no auto-summary
+```
