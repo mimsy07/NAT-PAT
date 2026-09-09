@@ -28,7 +28,7 @@ VLANs and Router-on-a-Stick are used on ISP side to separate the three company n
 
 <p align="center">
 Network Diagram: <br/>
-<img src="https://github.com/mimsy07/NAT-PAT/blob/main/Untitled.png" height="80%" width="80%"/>
+<img src="https://github.com/mimsy07/NAT-PAT/blob/main/NAT%20topo.png" height="80%" width="80%"/>
 <br />
 
 <p align="center">
